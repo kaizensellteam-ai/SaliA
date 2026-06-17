@@ -1,0 +1,133 @@
+SECTION 1 — SCORES
+
+[RÉPONSE AUX OBJECTIONS] : 11 / 25
+Justification : Deux objections majeures identifiées — le budget (19:23) et le prestataire concurrent (20:51). Le budget est partiellement creusé, mais sans vraie tentative de reframing. L'objection prestataire est validée, puis abandonnée sans contre.
+
+Sous-critères :
+Identification — 4/5 — Les deux objections sont détectées et Noah les relève explicitement ("j'ai compris le niveau budget", "si on se penche avec Vanity 3")
+Validation — 4/5 — "C'est totalement normal" (20:36) sur le budget. Correct, mais trop rapide, sans empathie réelle
+Creusage — 2/8 — Sur le budget : Noah demande "qu'est-ce que vous allez réfléchir ?" (18:40), ce qui génère une réponse riche, mais il ne creuse pas davantage. Sur l'objection prestataire : zéro question posée pour comprendre ce qui lui plaît chez Vanity 3, ce qu'il lui manque, ce qu'il ne ferait pas à nouveau
+Réponse et contre — 1/7 — Sur le budget : aucune tentative de projection ROI, aucun chiffre mis en face. Sur le concurrent : Noah demande combien il facture (500€ vs 245€ lui), signale une différence de prix sans en faire un levier clair. Aucune reformulation de la différenciation
+
+[PRÉSENTATION DE L'OFFRE] : 7 / 15
+Justification : L'offre est présentée de manière structurée mais en monologue quasi-continu de 2:25 à 14:50. Noah parle trop, et la présentation n'est pas ancrée dans les douleurs exprimées par Laetitia au R1.
+
+Sous-critères :
+Timing — 1/3 — La présentation commence avant toute revalidation des douleurs du prospect. Les problèmes ne sont pas verbalisés par Laetitia avant le pitch
+Durée et concision — 1/2 — 12 minutes de présentation pour un call de 26 minutes, c'est disproportionné
+Personnalisation aux douleurs — 2/4 — Quelques éléments issus du R1 sont repris ("propriétaires dans vos valeurs", territoire rural) mais en surface, pas ancrés dans ses propres mots
+Équilibre rationnel / émotionnel — 2/3 — Quelques chiffres (x6, x80 visibilité) mais aucune projection émotionnelle ("imaginez dans 6 mois…")
+Engagement prospect — 1/3 — Noah pose des questions de vérification de compréhension ("ça vous parle ?", "vous avez des questions ?") mais ce ne sont pas des questions d'engagement
+
+[CADRAGE] : 6 / 15
+Justification : Le cadrage est le point le plus faible du call. Noah enchaîne immédiatement sur la présentation sans recadrer le contexte du R1, sans vérifier les ressources envoyées, sans annoncer la structure du call, et sans préparer Laetitia à prendre une décision.
+
+Sous-critères :
+Prise de lead — 2/3 — Noah prend la parole en premier, mais perd rapidement le lead (Laetitia mène à cheval, coupe, donne le rythme)
+Rappel contexte et revalidation — 1/3 — Quelques références au R1 dans la présentation, mais jamais une revalidation explicite de la situation de Laetitia avant de pitcher
+Vérification ressources — 0/3 — Aucune mention de ressources envoyées entre R1 et R2, aucune question sur ce qu'elle a pensé
+Annonce du déroulé — 2/3 — Noah annonce vaguement "je vais vous présenter mon offre, on voit si ça fait sens" (1:57), c'est minimal mais présent
+Préparation à la décision — 1/3 — Aucune phrase du type "à la fin de cet appel, je vous demanderai si vous souhaitez avancer". Le prospect n'est pas prévenu qu'une décision est attendue
+
+[RESPECT DE LA TRAME] : 9 / 15
+Trame fournie : cadrage → pitch de l'offre → présentation de l'offre → question / objection
+Cadrage ⚠️ — Partiellement réalisé, sans revalidation ni préparation à la décision
+Pitch de l'offre ✅ — Réalisé, structuré, compréhensible
+Présentation de l'offre ✅ — Réalisée avec les trois formules et les inclusions
+Question / objection ⚠️ — Les objections sont reçues mais pas traitées selon la méthode CDD. Identifiées, validées, mais pas creusées ni résolues
+Score : 3 étapes sur 4 respectées, mais 2 avec des défauts significatifs → 9/15
+
+[GESTION DE LA FIN D'APPEL] : 7 / 15
+Justification : Noah ne demande jamais directement si Laetitia veut avancer. C'est elle qui prend l'initiative de demander un délai de réflexion (18:00). Noah accepte sans reformuler le "oui flou" en commitment ferme.
+
+Sous-critères :
+Demande de décision explicite — 1/5 — Jamais posée directement. Noah tourne autour ("j'ai pas envie de vous dire prenez une décision maintenant", 18:40) mais ne demande pas
+Validation de l'engagement — 2/5 — Noah reformule partiellement les freins ("hormis le côté budget, il n'y a aucun frein", 20:36), ce qui est une bonne technique — mais il ne va pas au bout
+Gestion du ni oui ni non — 4/5 — Next step concret planifié : mail + appel le 15 décembre. C'est le point le plus solide de la fin d'appel
+
+[POSTURE ET DYNAMIQUE] : 4 / 8
+Justification : Noah est sympathique et crée un vrai rapport humain (cheval, humour). Mais il est trop en mode "vendeur qui présente" et pas assez en mode "expert qui diagnostique". Les questions ouvertes sont rares dans la première moitié.
+
+Sous-critères :
+Équilibre de la relation — 2/2 — Laetitia est à cheval, Noah s'adapte sans se dévaluer, ton égal maintenu
+Qualité des questions ouvertes — 0/2 — La plupart des questions sont fermées ou de validation ("ça vous parle ?", "des questions ?"). La seule vraie question ouverte est "qu'est-ce que vous allez réfléchir ?" (18:40)
+Mise en confiance — 1/2 — Laetitia s'ouvre sur son historique, sa situation financière, son conjoint — bonne mise en confiance, mais elle a plus amené ça elle-même que Noah ne l'a provoqué
+Gestion des silences — 1/2 — Quelques silences assumés mais Noah a tendance à enchaîner rapidement après ses questions
+
+[RATIO DE PAROLE] : 0 / 7
+Calcul estimé : Noah parle sur environ 17-18 minutes sur 26 minutes total → environ 65-70% du temps de parole.
+Score : +55% → 0 pt
+
+SCORE TOTAL : 44 / 100
+
+SECTION 2 — TIMELINE HORODATÉE
+
+1:57 — 🟡 — Absence de cadrage réel
+Explication : Noah annonce vaguement "l'idée c'est de vous présenter mon offre, voir si ça fait sens" — c'est trop mou. Il n'annonce pas la structure, ne prévient pas que Laetitia devra prendre une décision, et ne revalide pas le contexte du R1. Le prospect entre dans la présentation sans engagement préalable.
+Alternative : "Laetitia, avant de vous présenter les offres, je voulais qu'on se resynchronise sur votre situation. On avait parlé de [X] lors de notre premier échange — est-ce que c'est toujours votre priorité aujourd'hui ? Et je vous préviens : à la fin de cet appel, je vous poserai directement la question de si on avance ensemble."
+
+2:25 — 🔴 — Monologue de présentation trop long
+Explication : Noah enchaîne sans interruption sur la méthode VVV, les trends, les stories, les descriptions, le budget sponsorisation, les objectifs — pendant plus de 12 minutes. À aucun moment il ne dit "est-ce que c'est bien ce que vous avez besoin ?" avant d'avoir tout pitché. Laetitia n'est pas actrice, elle subit.
+Alternative : Couper la présentation en blocs de 2-3 minutes avec des questions d'ancrage : "Est-ce que c'est ce genre de problème que vous avez vécu sur votre compte ?" ou "Qu'est-ce qui vous a bloqué quand vous avez essayé de publier vous-même ?"
+
+11:26 — 🟢 — Laetitia s'ouvre d'elle-même
+Explication : Laetitia prend la parole spontanément pour expliquer qu'elle avait commencé à alimenter sa page puis avait arrêté, et qu'elle veut se réorganiser pour 2025-2026. C'est un signal d'achat clair — elle projette déjà l'usage de la solution. Noah écoute mais ne reformule pas ce signal pour le transformer en engagement.
+
+16:40 — 🟢 — Laetitia choisit la Starter seule
+Explication : Sans que Noah la guide, Laetitia identifie spontanément la Starter comme la plus adaptée à sa situation ("on part presque de zéro", "relancer la machine"). C'est une projection en tant que cliente. Noah valide correctement sans over-seller — c'est la bonne posture.
+
+18:40 — 🔴 — Pas de demande de closing
+Explication : Noah dit littéralement "ma démarche c'est que j'ai pas envie de vous dire prenez une décision maintenant". Il se disqualifie lui-même en tant que closer. C'est Laetitia qui demande un délai de réflexion — la dynamique est inversée. Noah aurait dû poser la question de décision directement, et c'est elle qui aurait pu demander un délai, pas Noah qui le lui offre.
+Alternative : "Laetitia, est-ce que ce que vous avez vu aujourd'hui vous donne envie d'avancer avec moi ? Pas forcément maintenant — mais est-ce que le principe vous convient ?"
+
+20:36 — 🟢 — Bon réflexe de synthèse des freins
+Explication : Noah reformule : "hormis le côté budget, il n'y a aucun frein sur le fait qu'on collabore". C'est la bonne technique — isoler l'objection. Mais il s'arrête là au lieu d'enchaîner : "Donc si on trouve une façon de résoudre la question budget, on part ensemble ?" Ce demi-point aurait pu transformer le call.
+
+20:51 — 🔴 — Objection prestataire abandonnée
+Explication : Laetitia révèle qu'elle a déjà un prestataire satisfaisant (Vanity 3, 500€/mois). C'est la deuxième objection majeure. Noah demande combien il facture (23:38), observe la différence de prix, commente vaguement la qualité — mais ne pose aucune question sur ce que Vanity 3 ne fait pas ou ne peut pas faire pour la conciergerie spécifiquement.
+Alternative : "Ce prestataire vous accompagne bien — qu'est-ce qu'il ne fait pas pour vous aujourd'hui que vous aimeriez voir fait ?" ou "Est-ce qu'il a une expertise spécifique sur la conciergerie comme je l'ai ?"
+
+23:47 — 🔴 — Avantage concurrentiel non exploité
+Explication : Laetitia confirme que Vanity 3 facture 500€/mois pour du contenu quotidien. Noah (qui propose 245€) laisse passer sans positionner son offre. Il y a pourtant un argument de ROI immédiat : même engagement de départ à la moitié du prix, avec une spécialisation conciergerie.
+Alternative : "Vous me dites 500€ par mois pour du contenu quotidien, contre 245€ chez moi avec une spécialisation sur 4 conciergeries. Qu'est-ce qui vous aiderait à comparer les deux propositions de façon concrète ?"
+
+SECTION 3 — PLAN D'ACTION GLOBAL
+
+Axe 1 : Construire un cadrage qui prépare la décision
+Problème détecté : Dans ce call, Noah enchaîne directement sur la présentation sans recadrer le contexte du R1, sans vérifier les ressources envoyées, et surtout sans annoncer que le prospect devra prendre une décision à la fin. Résultat : Laetitia entre dans le call sans engagement psychologique, et la fin d'appel devient une négociation non préparée.
+Impact : Le prospect ne se prépare pas mentalement à décider. Quand la question de closing arrive (ou n'arrive pas), il n'est pas dans le bon état d'esprit. Il demande un délai par réflexe, pas parce que c'est nécessaire.
+Comment travailler ça : Sur le prochain call, écrire et prononcer mot pour mot en début d'appel : "À la fin de cet échange, je vous poserai directement la question de si vous souhaitez qu'on travaille ensemble. Vous n'êtes pas obligé de dire oui — mais je veux qu'on ait une vraie réponse à la fin." Tester ça sur 3 calls et noter la réaction du prospect.
+
+Axe 2 : Passer de 65% à 30% de parole
+Problème détecté : Sur ce call de 26 minutes, Noah parle environ 65 à 70% du temps. La présentation dure 12 minutes quasi-continues. Les questions posées sont majoritairement fermées ou rhétoriques ("ça vous parle ?", "vous avez des questions ?").
+Impact : Le prospect n'exprime pas ses vrais freins en temps réel. Noah ne peut pas adapter son pitch. Et les objections remontent en fin de call, quand il est trop tard pour les traiter correctement.
+Comment travailler ça : Préparer 5 questions ouvertes liées aux douleurs de chaque prospect avant chaque call. Règle : ne pas passer à l'étape suivante de la présentation sans avoir posé une question et laissé le prospect parler plus de 30 secondes. S'enregistrer et compter les temps de parole sur le prochain call.
+
+Axe 3 : Traiter les objections jusqu'au bout avec la méthode CDD
+Problème détecté : Sur ce call, les deux objections majeures (budget et prestataire concurrent) sont identifiées et validées, mais pas creusées. Noah demande "qu'est-ce que vous allez réfléchir ?" — bonne initiative — mais s'arrête après la réponse de Laetitia sans proposer de reframing, sans chiffres, sans contre.
+Impact : Le prospect repart avec ses freins intacts. Sans contre-argument, il n'a aucune raison de changer d'avis pendant sa période de réflexion. Le deal repose uniquement sur l'espoir qu'il décide seul.
+Comment travailler ça : Pour chaque call, préparer à l'avance une réponse aux 3 objections les plus fréquentes de son activité (budget, prestataire existant, pas le bon moment). Pour chaque objection, écrire : la question de creusage, la reformulation, et le contre concret. Les avoir sous les yeux pendant le call.
+
+SECTION 4 — CONSEILS POUR CLOSER CE DEAL
+
+Conseil 1 : Ancrer le ROI sur le budget
+Ce qui s'est passé : À 19:23, Laetitia explique que son frein principal est budgétaire — elle doit voir si l'entreprise peut absorber ce coût supplémentaire et faire une projection. Noah répond "c'est totalement normal" et passe à autre chose. Ce qu'il fallait faire : Proposer un cadre de projection immédiat. "Vous m'avez dit que vous cherchez des propriétaires qualifiés. Si dans 6 mois, on vous amène un seul contrat de propriétaire supplémentaire grâce à la visibilité en ligne, ça représente combien pour vous en chiffre d'affaires sur l'année ? Est-ce que ça couvre les 245€/mois ?" Ce n'est pas de la pression — c'est lui donner l'outil pour faire sa projection elle-même. Ce que tu peux encore faire : Dans le mail que tu lui envoies, inclure un calcul simple. "1 contrat propriétaire moyen = X€ de CA annuel. La Starter coûte 2940€/an. Il suffit d'un contrat supplémentaire pour que ce soit autofinancé." Si tu ne connais pas le montant moyen d'un contrat, demande-lui au 15 décembre avant de pitcher.
+
+Conseil 2 : Différencier ton offre de Vanity 3 sur un axe que lui ne peut pas tenir
+Ce qui s'est passé : À 20:51, Laetitia révèle qu'elle a un prestataire satisfaisant à 500€/mois. Noah réagit en demandant le prix et en reconnaissant que "le contenu est de très bonne qualité" (24:11). Il se positionne ainsi en challenger d'un prestataire qu'il lui-même valide. Ce qu'il fallait faire : Questionner ce que Vanity 3 fait spécifiquement pour une conciergerie. "Est-ce qu'il a d'autres clients dans la conciergerie ? Est-ce qu'il connaît les codes de communication pour attirer des propriétaires plutôt que des voyageurs ?" Puis positionner sa spécialisation sur 4 conciergeries comme un avantage que Vanity 3 ne peut pas revendiquer. Ce que tu peux encore faire : Dans le mail, ajouter une ligne sur ta spécialisation. "Je travaille avec 4 conciergeries en ce moment — ce que ça m'a appris sur les propriétaires qui convertissent, c'est que [insight concret]. C'est ce que j'appliquerai sur votre compte."
+
+Conseil 3 : Transformer le 15 décembre en rendez-vous de décision, pas en point de contact
+Ce qui s'est passé : À 25:06, Noah dit "je vous appellerai dans la matinée, si vous disponible, on en parlera." C'est un appel flottant sans agenda. Laetitia peut facilement déprioriser, oublier, ou reporter. Ce qu'il fallait faire : Poser un rendez-vous horaire fixe avec un objet précis. "On se pose le 15 décembre à 10h pour que vous me donniez votre décision. Je serai disponible pour répondre à vos dernières questions si vous en avez." Ce que tu peux encore faire : Dans ton mail de suivi, écrire : "Je vous appelle le 15 décembre à [heure]. Si vous avez des questions d'ici là, je suis disponible." Cela transforme l'appel en rendez-vous structuré et rend le no-show plus difficile.
+
+SECTION 5 — PLAN DE RELANCE
+
+Relance 1 — EMAIL — J+0 (aujourd'hui)
+Objet : Votre présentation + les offres détaillées
+Message : Bonjour Laetitia, Comme convenu, je vous envoie la présentation ainsi que le détail des trois offres avec les tarifs associés. Pour résumer ce dont nous avons parlé : vous partez d'un compte peu actif sur un territoire rural sans concurrence directe, avec un objectif d'attirer des propriétaires qualifiés qui correspondent à vos valeurs. La formule Starter à 245€/mois TTC est la plus cohérente pour relancer la machine, comme vous l'avez formulé, sans surcharger la trésorerie d'une structure créée en janvier. Sur la question budgétaire que vous m'avez mentionnée : si vous souhaitez faire votre projection, le bon angle est de vous demander combien vous rapporte en moyenne un contrat propriétaire sur 12 mois. La Starter coûte 2940€ par an — si elle vous amène un seul contrat supplémentaire, elle est remboursée. Je vous appelle le 15 décembre pour avoir votre retour. Bonne journée, Noah
+
+Relance 2 — EMAIL — J+7 (9 décembre)
+Objet : Une question avant notre échange du 15
+Message : Bonjour Laetitia, Je voulais vous envoyer un message rapide avant notre point du 15 décembre. Vous m'avez parlé de votre partenaire actuel et du fait que vous souhaitiez peut-être lui soumettre la même question — c'est une démarche tout à fait logique. Pour vous faciliter la comparaison, voici un point simple : je travaille avec 4 conciergeries en ce moment, ce qui signifie que les contenus que je crée sont pensés pour parler directement aux propriétaires, pas seulement pour générer de l'engagement général. Si vous avez des questions en attendant le 15, je suis disponible. Noah
+
+Relance 3 — SMS ou APPEL COURT — J+13 (15 décembre matin)
+Message : Bonjour Laetitia, c'est Noah. On avait prévu qu'on échange aujourd'hui. Je vous appelle dans la matinée comme convenu — dites-moi si 10h ou 11h vous convient mieux.

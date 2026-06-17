@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SalIA — Feedback {{NOM_CLIENT}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface2: #EEF2F8;
+  --border: rgba(15,23,42,0.07);
+  --border2: rgba(15,23,42,0.13);
+  --accent: #0099BB;
+  --accent2: #6B51EF;
+  --green: #059669;
+  --yellow: #D97706;
+  --red: #DC2626;
+  --text: #0F172A;
+  --muted: #64748B;
+  --muted2: #94A3B8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(15,23,42,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none; z-index: 0;
+}
+
+/* LAYOUT */
+.layout { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 248px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  box-shadow: 2px 0 16px rgba(15,23,42,0.05);
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--text); }
+.logo span { color: var(--accent); }
+.logo-sub { font-size: 12px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+.sidebar-meta {
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.meta-label { font-size: 12px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+.meta-value { font-size: 14px; color: var(--text); font-weight: 500; }
+.meta-sub { font-size: 13px; color: var(--muted2); margin-top: 2px; }
+
+.sidebar-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+.nav-label { font-size: 12px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; padding: 0 10px; margin-bottom: 6px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  transition: all 0.15s; margin-bottom: 1px;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active {
+  background: rgba(0,153,187,0.07);
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+.nav-icon { font-size: 14px; width: 16px; text-align: center; }
+
+/* SIDEBAR SCORE */
+.sidebar-score {
+  padding: 18px 20px 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.big-score-label { font-size: 12px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+.score-ring-wrap {
+  position: relative;
+  width: 90px; height: 90px;
+  margin: 0 auto 12px;
+}
+.score-ring { width: 90px; height: 90px; transform: rotate(-90deg); }
+.score-ring .sr-track { fill: none; stroke: var(--surface2); stroke-width: 6; }
+.score-ring .sr-fill {
+  fill: none; stroke-width: 6;
+  stroke-dasharray: 251.33;
+  stroke-dashoffset: calc(251.33 - var(--score, 0) * 2.5133);
+  stroke-linecap: round;
+  stroke: url(#scoreGrad);
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1);
+}
+.score-ring-val {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.big-score-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px; font-weight: 700;
+  color: var(--text); line-height: 1;
+}
+.big-score-denom { font-size: 12px; color: var(--muted2); margin-top: 2px; }
+
+.score-result {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+}
+.result-close, .result-won { background: rgba(5,150,105,0.08); color: var(--green); border: 1px solid rgba(5,150,105,0.18); }
+.result-r3, .result-r2 { background: rgba(217,119,6,0.08); color: var(--yellow); border: 1px solid rgba(217,119,6,0.18); }
+.result-lost { background: rgba(220,38,38,0.08); color: var(--red); border: 1px solid rgba(220,38,38,0.18); }
+
+/* MAIN */
+.main { flex: 1; padding: 32px 36px; overflow-x: hidden; }
+
+.section { margin-bottom: 48px; scroll-margin-top: 20px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.section-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,153,187,0.08); border: 1px solid rgba(0,153,187,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--accent);
+}
+.section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px; color: var(--text); }
+.section-sub { font-size: 13px; color: var(--muted2); margin-left: auto; }
+
+/* SCORE GRID — RINGS */
+.scores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 16px;
+}
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 12px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.score-card:hover { box-shadow: 0 4px 14px rgba(15,23,42,0.08); transform: translateY(-1px); }
+.score-card.wide {
+  grid-column: span 3; flex-direction: row; gap: 18px;
+  align-items: center; justify-content: center; padding: 16px 24px;
+}
+
+.sc-ring-wrap { position: relative; width: 68px; height: 68px; flex-shrink: 0; }
+.sc-ring { width: 68px; height: 68px; transform: rotate(-90deg); }
+.sc-ring .ring-track { fill: none; stroke: var(--surface2); stroke-width: 3; }
+.sc-ring .ring-fill-el {
+  fill: none; stroke-width: 3;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--pct, 0));
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.sc-ring-center {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.sc-ring-score {
+  font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700;
+}
+.sc-info { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.sc-info.wide-info { align-items: flex-start; text-align: left; }
+.sc-label { font-size: 13px; color: var(--muted); line-height: 1.3; font-weight: 500; }
+.sc-max { font-size: 12px; color: var(--muted2); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+/* Color classes — work for both SVG stroke and HTML text/bg */
+.score-good { color: var(--green); }
+.score-mid  { color: var(--yellow); }
+.score-bad  { color: var(--red); }
+
+.fill-good { background: linear-gradient(90deg, var(--green), #34D399); color: var(--green); stroke: var(--green); }
+.fill-mid  { background: linear-gradient(90deg, var(--yellow), #FCD34D); color: var(--yellow); stroke: var(--yellow); }
+.fill-bad  { background: linear-gradient(90deg, var(--red), #F87171); color: var(--red); stroke: var(--red); }
+.fill-accent { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: var(--accent); stroke: var(--accent); }
+
+/* PANEL */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+  transition: box-shadow 0.2s;
+}
+.panel:hover { box-shadow: 0 3px 10px rgba(15,23,42,0.07); }
+
+.panel-head {
+  padding: 13px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+  transition: background 0.15s;
+  border-bottom: 1px solid transparent;
+}
+.panel-head:hover { background: var(--surface2); }
+.panel.open .panel-head { background: var(--surface2); border-bottom-color: var(--border); }
+
+.panel-head-left { display: flex; align-items: center; gap: 10px; }
+.ph-bar {
+  width: 3px; height: 18px; border-radius: 2px;
+  background: var(--border2); flex-shrink: 0;
+  transition: background 0.2s;
+}
+.panel.open .ph-bar { background: var(--accent); }
+
+.ph-title { font-size: 14px; color: var(--text); font-weight: 500; }
+.ph-right { display: flex; align-items: center; gap: 10px; }
+.ph-score {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+  padding: 3px 9px; border-radius: 6px; background: var(--surface2);
+}
+.ph-arrow { font-size: 13px; color: var(--muted2); transition: transform 0.3s; }
+.panel.open .ph-arrow { transform: rotate(180deg); }
+
+.panel-detail {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+  padding: 0 16px;
+}
+.panel.open .panel-detail { max-height: 700px; padding: 0 16px 16px; }
+
+/* SUB CRITERIA */
+.sub-criteria { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.sub-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.sub-left { display: flex; flex-direction: column; gap: 3px; }
+.sub-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.sub-justif { font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 500px; }
+.sub-score {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600;
+  white-space: nowrap; margin-left: 16px;
+  padding: 2px 9px; border-radius: 6px; background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; position: relative; padding-left: 14px; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 30px; top: 16px; bottom: 16px;
+  width: 1px; background: var(--border2);
+}
+.moment {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 0 0 10px 0;
+  position: relative;
+}
+.moment-dot {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  margin-top: 14px; position: relative; z-index: 1;
+  background: var(--surface); border: 2px solid var(--border2);
+}
+.moment.m-green .moment-dot { background: var(--green); border-color: var(--green); box-shadow: 0 0 0 3px rgba(5,150,105,0.12); }
+.moment.m-yellow .moment-dot { background: var(--yellow); border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(217,119,6,0.12); }
+.moment.m-red .moment-dot { background: var(--red); border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,0.12); }
+
+.moment-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+  transition: box-shadow 0.2s;
+}
+.moment-card:hover { box-shadow: 0 3px 10px rgba(15,23,42,0.07); }
+.moment.m-green .moment-card { border-left: 2px solid var(--green); }
+.moment.m-yellow .moment-card { border-left: 2px solid var(--yellow); }
+.moment.m-red .moment-card { border-left: 2px solid var(--red); }
+
+.moment-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.moment-ts {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+  background: var(--surface2); color: var(--muted);
+  border: 1px solid var(--border);
+}
+.moment.m-green .moment-ts { color: var(--green); background: rgba(5,150,105,0.06); border-color: rgba(5,150,105,0.18); }
+.moment.m-yellow .moment-ts { color: var(--yellow); background: rgba(217,119,6,0.06); border-color: rgba(217,119,6,0.18); }
+.moment.m-red .moment-ts { color: var(--red); background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.18); }
+
+.moment-emoji { font-size: 14px; }
+.moment-title { font-size: 14px; font-weight: 500; color: var(--text); }
+.moment-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+/* AXES */
+.axes { display: flex; flex-direction: column; gap: 10px; }
+.axe {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; gap: 14px;
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+}
+.axe-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--red);
+}
+.axe-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.axe-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* CONSEILS */
+.conseils { display: flex; flex-direction: column; gap: 10px; }
+.conseil {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px; padding: 16px 18px;
+  display: flex; gap: 14px;
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+}
+.conseil-icon { font-size: 20px; flex-shrink: 0; }
+.conseil-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.conseil-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* RELANCES */
+.relances { display: flex; flex-direction: column; gap: 10px; }
+.relance {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px;
+  box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+}
+.relance-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.r-tag {
+  font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 5px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  font-family: 'Syne', sans-serif;
+}
+.r-mail { background: rgba(107,81,239,0.08); color: var(--accent2); border: 1px solid rgba(107,81,239,0.18); }
+.r-sms  { background: rgba(0,153,187,0.08);  color: var(--accent);  border: 1px solid rgba(0,153,187,0.18); }
+.r-call { background: rgba(5,150,105,0.08);  color: var(--green);   border: 1px solid rgba(5,150,105,0.18); }
+.r-timing { font-size: 13px; color: var(--muted2); font-family: 'JetBrains Mono', monospace; }
+.r-subject { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.r-divider { height: 1px; background: var(--border); margin-bottom: 10px; }
+.r-body { font-size: 13px; color: var(--muted); line-height: 1.7; white-space: pre-line; }
+
+/* HERO BANNER */
+.hero {
+  background: linear-gradient(135deg, rgba(0,153,187,0.05) 0%, rgba(107,81,239,0.05) 100%);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 36px 44px;
+  margin-bottom: 44px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+  animation: heroIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero::before {
+  content: '';
+  position: absolute; right: -60px; top: -60px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(107,81,239,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; left: -40px; bottom: -50px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,153,187,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-meta { flex: 1; position: relative; z-index: 1; }
+.hero-label { font-size: 12px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1.4px; margin-bottom: 8px; }
+.hero-prospect {
+  font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800;
+  color: var(--text); line-height: 1.1; margin-bottom: 5px;
+}
+.hero-context { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+.hero-details {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted2);
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-sep { color: var(--border2); }
+
+.hero-score {
+  position: relative; width: 152px; height: 152px;
+  flex-shrink: 0; z-index: 1;
+}
+.hero-ring { width: 152px; height: 152px; transform: rotate(-90deg); }
+.hr-track { fill: none; stroke: rgba(15,23,42,0.07); stroke-width: 7; }
+.hr-fill {
+  fill: none; stroke-width: 7;
+  stroke-dasharray: 251.33;
+  stroke-dashoffset: calc(251.33 - var(--score, 0) * 2.5133);
+  stroke-linecap: round;
+  stroke: url(#scoreGrad);
+  transition: stroke-dashoffset 1.3s cubic-bezier(0.22,1,0.36,1) 0.4s;
+}
+.hero-ring-val {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.hero-score-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 50px; font-weight: 700;
+  color: var(--text); line-height: 1;
+}
+.hero-score-den { font-size: 13px; color: var(--muted2); margin-top: 3px; }
+
+.hero-right {
+  display: flex; flex-direction: column; align-items: flex-end;
+  gap: 14px; flex-shrink: 0; z-index: 1;
+}
+.hero-result-wrap .score-result { font-size: 14px; padding: 6px 16px; }
+.hero-client-block { text-align: right; }
+.hero-client-label { font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 3px; }
+.hero-client { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
+
+/* SCROLL REVEAL */
+.sr {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+              transform 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.sr.sr-left  { transform: translateX(-24px); }
+.sr.sr-right { transform: translateX(24px); }
+.sr.sr-scale { transform: translateY(20px) scale(0.97); }
+.sr.visible  { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0099BB"/>
+      <stop offset="100%" stop-color="#6B51EF"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo">Sal<span>i</span>A</div>
+      <div class="logo-sub">Sales Intelligence</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Sections</div>
+      <a href="#scores"   class="nav-item active"><span class="nav-icon">🎯</span> Scores par critère</a>
+      <a href="#timeline" class="nav-item"><span class="nav-icon">🕐</span> Timeline horodatée</a>
+      <a href="#axes"     class="nav-item"><span class="nav-icon">📈</span> Plan d'action</a>
+      <a href="#conseils" class="nav-item"><span class="nav-icon">💡</span> Closer ce deal</a>
+      <a href="#relances" class="nav-item"><span class="nav-icon">✉️</span> Plan de relance</a>
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO BANNER -->
+    <div class="hero" style="--score: {{NOTE_GLOBALE}}">
+      <div class="hero-meta">
+        <div class="hero-label">Analyse d'appel</div>
+        <div class="hero-prospect">{{NOM_PROSPECT}}</div>
+        <div class="hero-context">{{CONTEXTE_PROSPECT}}</div>
+        <div class="hero-details">
+          <span>{{DATE_CALL}}</span>
+          <span class="hero-sep">·</span>
+          <span>{{TYPE_APPEL}}</span>
+          <span class="hero-sep">·</span>
+          <span>{{DUREE_APPEL}}</span>
+        </div>
+      </div>
+
+      <div class="hero-score">
+        <svg class="hero-ring" viewBox="0 0 100 100">
+          <circle class="hr-track" cx="50" cy="50" r="40"/>
+          <circle class="hr-fill"  cx="50" cy="50" r="40"/>
+        </svg>
+        <div class="hero-ring-val">
+          <div class="hero-score-num">{{NOTE_GLOBALE}}</div>
+          <div class="hero-score-den">/ 100</div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-result-wrap">
+          <div class="score-result {{CLASSE_RESULTAT}}">{{RESULTAT_APPEL}}</div>
+        </div>
+        <div class="hero-client-block">
+          <div class="hero-client-label">Vendeur</div>
+          <div class="hero-client">{{NOM_CLIENT}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 — SCORES -->
+    <section class="section" id="scores">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Note globale & scores par critère</div>
+        <div class="section-sub">Clique sur un critère pour voir la justification</div>
+      </div>
+
+      <div class="scores-grid">
+
+        <div class="score-card" style="--pct: {{PCT_OBJ}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_OBJ}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_OBJ}}">{{SCORE_OBJ}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Réponse aux objections</div>
+            <div class="sc-max">/25</div>
+          </div>
+        </div>
+
+        <div class="score-card" style="--pct: {{PCT_PRES}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_PRES}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_PRES}}">{{SCORE_PRES}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Présentation de l'offre</div>
+            <div class="sc-max">/15</div>
+          </div>
+        </div>
+
+        <div class="score-card" style="--pct: {{PCT_CAD}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_CAD}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_CAD}}">{{SCORE_CAD}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Cadrage</div>
+            <div class="sc-max">/15</div>
+          </div>
+        </div>
+
+        <div class="score-card" style="--pct: {{PCT_TRAME}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_TRAME}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_TRAME}}">{{SCORE_TRAME}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Respect de la trame</div>
+            <div class="sc-max">/15</div>
+          </div>
+        </div>
+
+        <div class="score-card" style="--pct: {{PCT_FIN}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_FIN}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_FIN}}">{{SCORE_FIN}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Gestion fin d'appel</div>
+            <div class="sc-max">/15</div>
+          </div>
+        </div>
+
+        <div class="score-card" style="--pct: {{PCT_POST}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_POST}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_POST}}">{{SCORE_POST}}</span>
+            </div>
+          </div>
+          <div class="sc-info">
+            <div class="sc-label">Posture & dynamique</div>
+            <div class="sc-max">/8</div>
+          </div>
+        </div>
+
+        <div class="score-card wide" style="--pct: {{PCT_RATIO}}">
+          <div class="sc-ring-wrap">
+            <svg class="sc-ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+              <circle class="ring-fill-el {{CLASSE_RATIO}}" cx="18" cy="18" r="15.9"/>
+            </svg>
+            <div class="sc-ring-center">
+              <span class="sc-ring-score {{CLASSE_RATIO}}">{{SCORE_RATIO}}</span>
+            </div>
+          </div>
+          <div class="sc-info wide-info">
+            <div class="sc-label">Ratio de parole · Vendeur {{RATIO_PAROLE}}% du temps</div>
+            <div class="sc-max">/7</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CRITERE 1 — OBJECTIONS -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Réponse aux objections</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_OBJ}}">{{SCORE_OBJ}} / 25</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Identification de l'objection · /5</div>
+                <div class="sub-justif">{{JUSTIF_OBJ_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_OBJ_1}}">{{SCORE_OBJ_1}}/5</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Validation de l'objection · /5</div>
+                <div class="sub-justif">{{JUSTIF_OBJ_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_OBJ_2}}">{{SCORE_OBJ_2}}/5</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Creusage de l'objection · /8</div>
+                <div class="sub-justif">{{JUSTIF_OBJ_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_OBJ_3}}">{{SCORE_OBJ_3}}/8</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Réponse et contre · /7</div>
+                <div class="sub-justif">{{JUSTIF_OBJ_4}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_OBJ_4}}">{{SCORE_OBJ_4}}/7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 2 — PRESENTATION -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Présentation de l'offre</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_PRES}}">{{SCORE_PRES}} / 15</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Timing de la présentation · /3</div>
+                <div class="sub-justif">{{JUSTIF_PRES_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_PRES_1}}">{{SCORE_PRES_1}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Durée et concision · /2</div>
+                <div class="sub-justif">{{JUSTIF_PRES_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_PRES_2}}">{{SCORE_PRES_2}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Personnalisation aux douleurs · /4</div>
+                <div class="sub-justif">{{JUSTIF_PRES_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_PRES_3}}">{{SCORE_PRES_3}}/4</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Équilibre rationnel / émotionnel · /3</div>
+                <div class="sub-justif">{{JUSTIF_PRES_4}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_PRES_4}}">{{SCORE_PRES_4}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Engagement prospect pendant la présentation · /3</div>
+                <div class="sub-justif">{{JUSTIF_PRES_5}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_PRES_5}}">{{SCORE_PRES_5}}/3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 3 — CADRAGE -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Cadrage</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_CAD}}">{{SCORE_CAD}} / 15</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Prise de lead dès l'ouverture · /3</div>
+                <div class="sub-justif">{{JUSTIF_CAD_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_CAD_1}}">{{SCORE_CAD_1}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Rappel du contexte et validation · /3</div>
+                <div class="sub-justif">{{JUSTIF_CAD_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_CAD_2}}">{{SCORE_CAD_2}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Vérification des ressources envoyées · /3</div>
+                <div class="sub-justif">{{JUSTIF_CAD_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_CAD_3}}">{{SCORE_CAD_3}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Annonce du déroulé · /3</div>
+                <div class="sub-justif">{{JUSTIF_CAD_4}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_CAD_4}}">{{SCORE_CAD_4}}/3</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Préparation à la décision · /3</div>
+                <div class="sub-justif">{{JUSTIF_CAD_5}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_CAD_5}}">{{SCORE_CAD_5}}/3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 4 — TRAME -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Respect de la trame</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_TRAME}}">{{SCORE_TRAME}} / 15</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Validation du problème client · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_1}}">{{SCORE_TRAME_1}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Validation du besoin de solution · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_2}}">{{SCORE_TRAME_2}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Projection dans la situation rêvée · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_3}}">{{SCORE_TRAME_3}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Analyse du gap · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_4}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_4}}">{{SCORE_TRAME_4}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Pitch et annonce du prix · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_5}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_5}}">{{SCORE_TRAME_5}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Traitement des objections · /2</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_6}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_6}}">{{SCORE_TRAME_6}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Closing et onboarding · /3</div>
+                <div class="sub-justif">{{JUSTIF_TRAME_7}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_TRAME_7}}">{{SCORE_TRAME_7}}/3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 5 — FIN APPEL -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Gestion de la fin d'appel</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_FIN}}">{{SCORE_FIN}} / 15</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Demande de décision explicite · /5</div>
+                <div class="sub-justif">{{JUSTIF_FIN_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_FIN_1}}">{{SCORE_FIN_1}}/5</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Validation de l'engagement · /5</div>
+                <div class="sub-justif">{{JUSTIF_FIN_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_FIN_2}}">{{SCORE_FIN_2}}/5</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Gestion du ni oui ni non · /5</div>
+                <div class="sub-justif">{{JUSTIF_FIN_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_FIN_3}}">{{SCORE_FIN_3}}/5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 6 — POSTURE -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Posture & dynamique</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_POST}}">{{SCORE_POST}} / 8</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Équilibre de la relation · /2</div>
+                <div class="sub-justif">{{JUSTIF_POST_1}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_POST_1}}">{{SCORE_POST_1}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Qualité des questions ouvertes · /2</div>
+                <div class="sub-justif">{{JUSTIF_POST_2}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_POST_2}}">{{SCORE_POST_2}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Mise en confiance et ambiance · /2</div>
+                <div class="sub-justif">{{JUSTIF_POST_3}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_POST_3}}">{{SCORE_POST_3}}/2</div>
+            </div>
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Gestion des silences · /2</div>
+                <div class="sub-justif">{{JUSTIF_POST_4}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_POST_4}}">{{SCORE_POST_4}}/2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRITERE 7 — RATIO -->
+      <div class="panel" onclick="togglePanel(this)">
+        <div class="panel-head">
+          <div class="panel-head-left">
+            <div class="ph-bar"></div>
+            <div class="ph-title">Ratio de parole</div>
+          </div>
+          <div class="ph-right">
+            <div class="ph-score {{CLASSE_RATIO}}">{{SCORE_RATIO}} / 7</div>
+            <div class="ph-arrow">▼</div>
+          </div>
+        </div>
+        <div class="panel-detail">
+          <div class="sub-criteria">
+            <div class="sub-item">
+              <div class="sub-left">
+                <div class="sub-name">Ratio de parole vendeur · {{RATIO_PAROLE}}%</div>
+                <div class="sub-justif">{{JUSTIF_RATIO}}</div>
+              </div>
+              <div class="sub-score {{CLASSE_RATIO}}">{{SCORE_RATIO}}/7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 2 — TIMELINE -->
+    <section class="section" id="timeline">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">Timeline horodatée</div>
+        <div class="section-sub">🟢 Positif · 🟡 À améliorer · 🔴 Raté</div>
+      </div>
+      <div class="timeline">
+
+        <div class="moment {{CLASSE_M1}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M1}}</span>
+              <span class="moment-emoji">{{EMOJI_M1}}</span>
+              <span class="moment-title">{{TITRE_M1}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M1}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M2}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M2}}</span>
+              <span class="moment-emoji">{{EMOJI_M2}}</span>
+              <span class="moment-title">{{TITRE_M2}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M2}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M3}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M3}}</span>
+              <span class="moment-emoji">{{EMOJI_M3}}</span>
+              <span class="moment-title">{{TITRE_M3}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M3}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M4}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M4}}</span>
+              <span class="moment-emoji">{{EMOJI_M4}}</span>
+              <span class="moment-title">{{TITRE_M4}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M4}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M5}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M5}}</span>
+              <span class="moment-emoji">{{EMOJI_M5}}</span>
+              <span class="moment-title">{{TITRE_M5}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M5}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M6}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M6}}</span>
+              <span class="moment-emoji">{{EMOJI_M6}}</span>
+              <span class="moment-title">{{TITRE_M6}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M6}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M7}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M7}}</span>
+              <span class="moment-emoji">{{EMOJI_M7}}</span>
+              <span class="moment-title">{{TITRE_M7}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M7}}</div>
+          </div>
+        </div>
+
+        <div class="moment {{CLASSE_M8}}">
+          <div class="moment-dot"></div>
+          <div class="moment-card">
+            <div class="moment-top">
+              <span class="moment-ts">{{TS_M8}}</span>
+              <span class="moment-emoji">{{EMOJI_M8}}</span>
+              <span class="moment-title">{{TITRE_M8}}</span>
+            </div>
+            <div class="moment-desc">{{DESC_M8}}</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3 — PLAN D'ACTION -->
+    <section class="section" id="axes">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">Plan d'action global</div>
+        <div class="section-sub">Axes de progression long terme</div>
+      </div>
+      <div class="axes">
+        <div class="axe">
+          <div class="axe-num">1</div>
+          <div class="axe-content">
+            <div class="axe-title">{{TITRE_AXE_1}}</div>
+            <div class="axe-desc">{{DESC_AXE_1}}</div>
+          </div>
+        </div>
+        <div class="axe">
+          <div class="axe-num">2</div>
+          <div class="axe-content">
+            <div class="axe-title">{{TITRE_AXE_2}}</div>
+            <div class="axe-desc">{{DESC_AXE_2}}</div>
+          </div>
+        </div>
+        <div class="axe">
+          <div class="axe-num">3</div>
+          <div class="axe-content">
+            <div class="axe-title">{{TITRE_AXE_3}}</div>
+            <div class="axe-desc">{{DESC_AXE_3}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 — CONSEILS -->
+    <section class="section" id="conseils">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Conseils pour closer ce deal</div>
+        <div class="section-sub">Basé sur ce call précis</div>
+      </div>
+      <div class="conseils">
+        <div class="conseil">
+          <div class="conseil-icon">💡</div>
+          <div class="conseil-content">
+            <div class="conseil-title">{{TITRE_CONSEIL_1}}</div>
+            <div class="conseil-desc">{{DESC_CONSEIL_1}}</div>
+          </div>
+        </div>
+        <div class="conseil">
+          <div class="conseil-icon">💡</div>
+          <div class="conseil-content">
+            <div class="conseil-title">{{TITRE_CONSEIL_2}}</div>
+            <div class="conseil-desc">{{DESC_CONSEIL_2}}</div>
+          </div>
+        </div>
+        <div class="conseil">
+          <div class="conseil-icon">💡</div>
+          <div class="conseil-content">
+            <div class="conseil-title">{{TITRE_CONSEIL_3}}</div>
+            <div class="conseil-desc">{{DESC_CONSEIL_3}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 — PLAN DE RELANCE -->
+    <section class="section" id="relances">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Plan de relance</div>
+        <div class="section-sub">Messages prêts à envoyer</div>
+      </div>
+      <div class="relances">
+        <div class="relance">
+          <div class="relance-head">
+            <span class="r-tag {{CLASSE_R1}}">{{CANAL_R1}}</span>
+            <span class="r-timing">{{TIMING_R1}}</span>
+          </div>
+          <div class="r-subject">{{SUJET_R1}}</div>
+          <div class="r-divider"></div>
+          <div class="r-body">{{MESSAGE_R1}}</div>
+        </div>
+        <div class="relance">
+          <div class="relance-head">
+            <span class="r-tag {{CLASSE_R2}}">{{CANAL_R2}}</span>
+            <span class="r-timing">{{TIMING_R2}}</span>
+          </div>
+          <div class="r-subject">{{SUJET_R2}}</div>
+          <div class="r-divider"></div>
+          <div class="r-body">{{MESSAGE_R2}}</div>
+        </div>
+        <div class="relance">
+          <div class="relance-head">
+            <span class="r-tag {{CLASSE_R3}}">{{CANAL_R3}}</span>
+            <span class="r-timing">{{TIMING_R3}}</span>
+          </div>
+          <div class="r-subject">{{SUJET_R3}}</div>
+          <div class="r-divider"></div>
+          <div class="r-body">{{MESSAGE_R3}}</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+function togglePanel(panel) {
+  panel.classList.toggle('open');
+}
+
+const sections = document.querySelectorAll('.section');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navItems.forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + current) n.classList.add('active');
+  });
+});
+
+// Scroll reveal
+(function () {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  function registerGroup(selector, variant, baseDelay, stepDelay) {
+    document.querySelectorAll(selector).forEach((el, i) => {
+      el.classList.add('sr');
+      if (variant) el.classList.add(variant);
+      el.style.transitionDelay = `${baseDelay + i * stepDelay}s`;
+      observer.observe(el);
+    });
+  }
+
+  // Section headers — glissent depuis la gauche
+  registerGroup('.section-header', 'sr-left', 0, 0);
+
+  // Score cards — montent en cascade
+  registerGroup('.score-card', 'sr-scale', 0, 0.06);
+
+  // Panels critères — montent l'un après l'autre
+  registerGroup('#scores .panel', null, 0, 0.07);
+
+  // Timeline moments — glissent depuis la gauche
+  registerGroup('.moment', 'sr-left', 0, 0.08);
+
+  // Axes, conseils, relances — montent en cascade
+  registerGroup('.axe',     null, 0, 0.08);
+  registerGroup('.conseil', null, 0, 0.08);
+  registerGroup('.relance', null, 0, 0.09);
+})();
+
+// Dynamic color coding for score cards
+function pctToColor(pct) {
+  // 0% = red (hue 0), 50% = yellow (hue 45), 100% = green (hue 120)
+  const hue = pct <= 50
+    ? pct * 0.9
+    : 45 + (pct - 50) * 1.5;
+  return {
+    text:   `hsl(${hue}, 85%, 30%)`,
+    stroke: `hsl(${hue}, 88%, 38%)`,
+    bg:     `hsl(${hue}, 82%, 91%)`,
+    border: `hsl(${hue}, 78%, 72%)`,
+    badge:  `hsl(${hue}, 80%, 88%)`,
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cards  = document.querySelectorAll('.score-card');
+  const panels = document.querySelectorAll('#scores .panel');
+
+  cards.forEach((card, i) => {
+    const pct = parseFloat(card.style.getPropertyValue('--pct')) || 0;
+    const c   = pctToColor(pct);
+
+    // Card background + border
+    card.style.background  = c.bg;
+    card.style.borderColor = c.border;
+
+    // Ring fill stroke
+    const ring = card.querySelector('.ring-fill-el');
+    if (ring) ring.style.stroke = c.stroke;
+
+    // Score number inside ring
+    const score = card.querySelector('.sc-ring-score');
+    if (score) score.style.color = c.text;
+
+    // Matching panel header badge
+    if (panels[i]) {
+      const badge = panels[i].querySelector('.ph-score');
+      if (badge) {
+        badge.style.color      = c.text;
+        badge.style.background = c.badge;
+        badge.style.border     = `1px solid ${c.border}`;
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
