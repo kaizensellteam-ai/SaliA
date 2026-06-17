@@ -1612,12 +1612,62 @@ function injectVars(template, vars) {
   return result;
 }
 
+const MAX_USES = 3;
+
+function redisUrl(path) {
+  return `${process.env.KV_REST_API_URL}${path}`;
+}
+
+function redisHeaders() {
+  return {
+    Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
+    "Content-Type": "application/json",
+  };
+}
+
+async function redisGet(key) {
+  const r = await fetch(redisUrl(`/get/${encodeURIComponent(key)}`), {
+    headers: redisHeaders(),
+  });
+  const data = await r.json();
+  return data.result;
+}
+
+async function redisSet(key, value) {
+  await fetch(redisUrl(`/set/${encodeURIComponent(key)}`), {
+    method: "POST",
+    headers: redisHeaders(),
+    body: JSON.stringify({ value }),
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { transcript, template } = req.body;
+  const { transcript, template, token } = req.body;
+
+  // Auth check
+  if (!token) {
+    return res.status(401).json({ error: "Non authentifié." });
+  }
+
+  const email = await redisGet(`session:${token}`);
+  if (!email) {
+    return res.status(401).json({ error: "Session expirée. Reconnecte-toi." });
+  }
+
+  const userKey = `user:${email}`;
+  const rawUser = await redisGet(userKey);
+  if (!rawUser) {
+    return res.status(401).json({ error: "Compte introuvable." });
+  }
+
+  const user = JSON.parse(rawUser);
+  if (user.uses >= MAX_USES) {
+    return res.status(403).json({ error: `Tu as utilisé tes ${MAX_USES} analyses. Compte épuisé.` });
+  }
 
   if (!transcript || !transcript.trim()) {
     return res.status(400).json({ error: "La transcription est vide." });
@@ -1650,6 +1700,11 @@ export default async function handler(req, res) {
   const vars = parseVariables(rawVars);
   const filledHtml = injectVars(template, vars);
 
+  // Increment usage count
+  user.uses += 1;
+  await redisSet(userKey, JSON.stringify(user));
+
   res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("X-Uses-Remaining", String(MAX_USES - user.uses));
   res.status(200).send(filledHtml);
 }
