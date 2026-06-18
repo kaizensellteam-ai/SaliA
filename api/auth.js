@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { createHash, randomBytes } from "node:crypto";
 
 const MAX_USES = 3;
 
@@ -38,11 +38,11 @@ async function redisSetEx(key, seconds, value) {
 }
 
 function hashPassword(password) {
-  return crypto.createHash("sha256").update(password + "salia_salt_2024").digest("hex");
+  return createHash("sha256").update(password + "salia_salt_2024").digest("hex");
 }
 
 function generateToken() {
-  return crypto.randomBytes(32).toString("hex");
+  return randomBytes(32).toString("hex");
 }
 
 export default async function handler(req, res) {
