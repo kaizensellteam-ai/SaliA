@@ -9,69 +9,127 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #06090F; --surface: #0C1018; --surface2: #111820;
-  --border: rgba(255,255,255,0.06); --accent: #00D4FF; --accent2: #7B61FF;
+  --border: rgba(255,255,255,0.08); --accent: #00D4FF; --accent2: #7B61FF;
   --green: #10B981; --red: #EF4444;
   --text: #E8EDF2; --muted: #5A6B7D; --muted2: #8A9BAD;
 }
+
 body {
   background: var(--bg); color: var(--text);
   font-family: 'DM Sans', sans-serif; min-height: 100vh;
   display: flex; flex-direction: column; align-items: center;
   justify-content: center; padding: 40px 20px;
 }
+
 body::before {
   content: ''; position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(0,212,255,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.018) 1px, transparent 1px);
+    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
   background-size: 52px 52px; pointer-events: none; z-index: 0;
 }
-.container { width: 100%; max-width: 420px; position: relative; z-index: 1; }
-.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 32px; color: var(--text); margin-bottom: 6px; }
+
+body::after {
+  content: ''; position: fixed;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, rgba(123,97,255,0.04) 40%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+.container { width: 100%; max-width: 400px; position: relative; z-index: 1; }
+
+.logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 36px;
+  color: var(--text); margin-bottom: 4px; line-height: 1;
+}
 .logo span { color: var(--accent); }
-.subtitle { font-size: 13px; color: var(--muted2); margin-bottom: 36px; }
+
+.tagline { font-size: 13px; font-weight: 300; color: var(--muted2); margin-bottom: 10px; }
+
+.headline {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+  color: var(--text); margin-bottom: 28px; line-height: 1.3;
+}
+
 .card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 28px; margin-bottom: 14px;
+  border-radius: 20px; padding: 28px;
+  box-shadow:
+    0 0 0 1px rgba(0,212,255,0.04),
+    0 4px 32px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
-.tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--surface2); border-radius: 10px; padding: 4px; }
+
+.tabs {
+  display: flex; gap: 4px; margin-bottom: 24px;
+  background: var(--surface2); border-radius: 10px; padding: 4px;
+}
 .tab {
   flex: 1; padding: 9px; border: none; border-radius: 8px; cursor: pointer;
   font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
   background: transparent; color: var(--muted2); transition: all 0.2s;
 }
 .tab.active { background: var(--accent); color: #06090F; }
+
 .field { margin-bottom: 16px; }
-label { display: block; font-size: 12px; color: var(--muted2); margin-bottom: 7px; font-weight: 500; }
+label { display: block; font-size: 12px; font-weight: 500; color: var(--muted2); margin-bottom: 7px; }
+
 input {
   width: 100%; background: var(--surface2); border: 1px solid var(--border);
   border-radius: 10px; padding: 13px 16px; color: var(--text);
-  font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
-  transition: border-color 0.2s;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
 }
-input:focus { border-color: rgba(0,212,255,0.35); }
+input:focus {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.06);
+}
+
 .btn {
   width: 100%; padding: 15px; border-radius: 12px; border: none; cursor: pointer;
   font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #06090F; transition: opacity 0.2s; margin-top: 4px;
+  color: #06090F; transition: opacity 0.2s, box-shadow 0.2s; margin-top: 4px;
+  position: relative; overflow: hidden;
 }
-.btn:hover:not(:disabled) { opacity: 0.88; }
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(0,212,255,0.3), 0 0 60px rgba(123,97,255,0.15);
+}
+.btn:hover:not(:disabled)::before { opacity: 1; }
 .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
 .status {
   border-radius: 10px; padding: 12px 16px; font-size: 13px;
-  margin-top: 14px; display: none; line-height: 1.5;
+  margin-top: 14px; display: none; line-height: 1.5; font-weight: 300;
 }
-.status.error { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); color: #F87171; }
-.status.success { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
-.info { font-size: 12px; color: var(--muted); margin-top: 16px; text-align: center; line-height: 1.6; }
-.info strong { color: var(--muted2); }
+.status.error { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); color: #F87171; }
+.status.success { background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
+
+.info {
+  font-size: 12px; font-weight: 300; color: var(--muted);
+  margin-top: 16px; text-align: center; line-height: 1.7;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+.info strong { color: var(--accent); font-weight: 500; }
+
+.footer {
+  margin-top: 24px; text-align: center; font-size: 12px; font-weight: 300;
+  color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.footer-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted); opacity: 0.4; }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="logo">Sal<span>i</span>A</div>
-  <div class="subtitle">Accède à ton outil d'analyse d'appels de vente.</div>
+  <div class="tagline">Analyse d'appels de vente par IA</div>
+  <div class="headline">Accède à ton outil.</div>
 
   <div class="card">
     <div class="tabs">
@@ -105,6 +163,12 @@ input:focus { border-color: rgba(0,212,255,0.35); }
     </div>
 
     <div class="status" id="status"></div>
+  </div>
+
+  <div class="footer">
+    <span>Propulsé par Claude</span>
+    <div class="footer-dot"></div>
+    <span>Kaizen Sell Team</span>
   </div>
 </div>
 
@@ -180,7 +244,6 @@ async function doRegister() {
   }
 }
 
-// Enter key support
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     const loginVisible = document.getElementById('form-login').style.display !== 'none';
