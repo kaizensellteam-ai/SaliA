@@ -1,23 +1,42 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #06090F;
-  --surface: #0C1018;
-  --surface2: #111820;
-  --border: rgba(255,255,255,0.08);
-  --accent: #00D4FF;
-  --accent2: #7B61FF;
-  --green: #10B981;
-  --yellow: #F59E0B;
+  --bg: #080A0F;
+  --bg2: #0C0F16;
+  --surface: #111520;
+  --surface2: #161B2A;
+  --surface3: #1C2235;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --accent: #C9A84C;
+  --accent2: #E8C96A;
+  --accent-dim: rgba(201,168,76,0.12);
+  --accent-glow: rgba(201,168,76,0.2);
+  --blue: #3B82F6;
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.1);
   --red: #EF4444;
-  --text: #E8EDF2;
-  --muted: #5A6B7D;
-  --muted2: #8A9BAD;
+  --red-dim: rgba(239,68,68,0.08);
+  --yellow: #F59E0B;
+  --text: #F0F4FA;
+  --text2: #A8B5C8;
+  --text3: #5E6E84;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 html, body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(201,168,76,0.25);
+}
+
+input, textarea, button {
+  font-family: var(--font-body);
 }
