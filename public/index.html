@@ -86,7 +86,10 @@ textarea::placeholder { color: var(--muted); }
 </head>
 <body>
 <div class="container">
-  <div class="logo">Sal<span>i</span>A</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+    <div class="logo">Sal<span>i</span>A</div>
+    <button onclick="logout()" style="background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:13px;padding:7px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted2)'">Déconnexion</button>
+  </div>
   <div class="subtitle">Colle la transcription de ton appel — reçois ton feedback en un clic.</div>
 
   <div class="card">
