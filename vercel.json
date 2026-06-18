@@ -1,13 +1,7 @@
 {
-  "framework": null,
-  "buildCommand": "",
-  "outputDirectory": "public",
+  "framework": "nextjs",
   "functions": {
-    "api/generate.js": {
-      "maxDuration": 120
-    },
-    "api/auth.js": {
-      "maxDuration": 10
-    }
+    "app/api/generate/route.ts": { "maxDuration": 120 },
+    "app/api/auth/route.ts": { "maxDuration": 10 }
   }
 }
