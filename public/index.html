@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SalIA — Analyse d'appel de vente</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -326,6 +327,44 @@ function showStatus(type, msg) {
   el.innerHTML = msg;
   el.style.display = 'block';
 }
+
+// Animations d'entrée
+(function() {
+  const { animate, stagger } = Motion;
+
+  // État initial — tout invisible
+  const els = ['.header', '.headline', '.subheadline', '.card', '#btn', '.footer'];
+  els.forEach(s => {
+    const el = document.querySelector(s);
+    if (el) el.style.opacity = '0';
+  });
+
+  // Séquence d'entrée
+  animate('.header',      { opacity: [0, 1], y: [-16, 0] }, { duration: 0.5, easing: [0.22, 1, 0.36, 1] });
+  animate('.headline',    { opacity: [0, 1], y: [24, 0]  }, { duration: 0.55, delay: 0.1, easing: [0.22, 1, 0.36, 1] });
+  animate('.subheadline', { opacity: [0, 1], y: [16, 0]  }, { duration: 0.5,  delay: 0.18, easing: [0.22, 1, 0.36, 1] });
+  animate('.card',        { opacity: [0, 1], y: [28, 0]  }, { duration: 0.6,  delay: 0.26, easing: [0.22, 1, 0.36, 1] });
+  animate('#btn',         { opacity: [0, 1], y: [16, 0]  }, { duration: 0.5,  delay: 0.38, easing: [0.22, 1, 0.36, 1] });
+  animate('.footer',      { opacity: [0, 1]               }, { duration: 0.4,  delay: 0.48 });
+
+  // Hover sur le bouton CTA
+  const btn = document.getElementById('btn');
+  btn.addEventListener('mouseenter', () => {
+    animate(btn, { scale: 1.015 }, { duration: 0.2, easing: 'ease-out' });
+  });
+  btn.addEventListener('mouseleave', () => {
+    animate(btn, { scale: 1 }, { duration: 0.2, easing: 'ease-out' });
+  });
+
+  // Animation du badge quand le statut apparaît
+  const observer = new MutationObserver(() => {
+    const status = document.getElementById('status');
+    if (status.style.display !== 'none') {
+      animate(status, { opacity: [0, 1], y: [10, 0] }, { duration: 0.35, easing: [0.22, 1, 0.36, 1] });
+    }
+  });
+  observer.observe(document.getElementById('status'), { attributes: true, attributeFilter: ['style'] });
+})();
 </script>
 </body>
 </html>
