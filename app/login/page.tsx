@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const ease = [0.22, 1, 0.36, 1] as const
-const spring = { type: 'spring', stiffness: 280, damping: 26 }
+const spring = { type: 'spring' as const, stiffness: 280, damping: 26 }
 
 const pillars = ['Posture', 'Écoute', 'Objections', 'Closing', 'Relance']
 
@@ -231,8 +231,8 @@ export default function Login() {
                   width: '100%', marginTop: 8, padding: '16px 0',
                   background: 'var(--accent)', border: 'none', borderRadius: 0,
                   fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 14,
-                  letterSpacing: 1, textTransform: 'uppercase', color: '#09070300',
-                  color: '#0a0702', cursor: loading ? 'wait' : 'pointer',
+                  letterSpacing: 1, textTransform: 'uppercase', color: '#0a0702',
+                  cursor: loading ? 'wait' : 'pointer',
                   opacity: loading ? 0.7 : 1, position: 'relative', overflow: 'hidden',
                 }}
               >
