@@ -1,3 +1,0 @@
-module.exports=[47327,a=>{"use strict";var b=a.i(23420);a.s(["default",0,function({children:a}){return(0,b.jsxs)("html",{lang:"fr",children:[(0,b.jsxs)("head",{children:[(0,b.jsx)("link",{rel:"preconnect",href:"https://fonts.googleapis.com"}),(0,b.jsx)("link",{rel:"preconnect",href:"https://fonts.gstatic.com",crossOrigin:"anonymous"}),(0,b.jsx)("link",{href:"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500&display=swap",rel:"stylesheet"})]}),(0,b.jsx)("body",{children:a})]})},"metadata",0,{title:"SalIA — Analyse d'appel de vente",description:"Analyse tes appels de vente par IA"}])},85991,a=>{a.n(a.i(47327))}];
-
-//# sourceMappingURL=SalIA_app_layout_tsx_0k08lxz._.js.map
