@@ -2,42 +2,42 @@ import { createHash, randomBytes } from 'node:crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
 const MAX_USES = 3
+const SUPABASE_URL = process.env.SUPABASE_URL!
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY!
 
-function redisUrl(path: string) {
-  return `${process.env.KV_REST_API_URL}${path}`
-}
-
-function redisHeaders() {
+function headers() {
   return {
-    Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
     'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
   }
 }
 
-async function redisGet(key: string) {
-  const r = await fetch(redisUrl(`/get/${encodeURIComponent(key)}`), { headers: redisHeaders() })
+async function getUser(email: string) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=*`, { headers: headers() })
   const data = await r.json()
-  return data.result
+  return data[0] || null
 }
 
-async function redisSet(key: string, value: string) {
-  await fetch(redisUrl(`/set/${encodeURIComponent(key)}`), {
-    method: 'POST', headers: redisHeaders(), body: JSON.stringify({ value }),
+async function createUser(email: string, password: string) {
+  await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+    method: 'POST',
+    headers: { ...headers(), 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ email, password }),
   })
 }
 
-async function redisSetEx(key: string, seconds: number, value: string) {
-  await fetch(redisUrl(`/setex/${encodeURIComponent(key)}/${seconds}`), {
-    method: 'POST', headers: redisHeaders(), body: JSON.stringify({ value }),
+async function createSession(token: string, email: string) {
+  const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+  await fetch(`${SUPABASE_URL}/rest/v1/sessions`, {
+    method: 'POST',
+    headers: { ...headers(), 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ token, email, expires_at: expires }),
   })
 }
 
 function hashPassword(password: string) {
   return createHash('sha256').update(password + 'salia_salt_2024').digest('hex')
-}
-
-function generateToken() {
-  return randomBytes(32).toString('hex')
 }
 
 export async function POST(req: NextRequest) {
@@ -47,30 +47,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Champs manquants.' }, { status: 400 })
 
   const emailLower = email.toLowerCase().trim()
-  const userKey = `user:${emailLower}`
 
   if (action === 'register') {
-    const existing = await redisGet(userKey)
+    const existing = await getUser(emailLower)
     if (existing) return NextResponse.json({ error: 'Un compte existe déjà avec cet email.' }, { status: 409 })
 
-    const user = { password: hashPassword(password), uses: 0 }
-    await redisSet(userKey, JSON.stringify(user))
+    await createUser(emailLower, hashPassword(password))
 
-    const token = generateToken()
-    await redisSetEx(`session:${token}`, 60 * 60 * 24 * 30, emailLower)
+    const token = randomBytes(32).toString('hex')
+    await createSession(token, emailLower)
     return NextResponse.json({ token, uses: 0, maxUses: MAX_USES })
   }
 
   if (action === 'login') {
-    const raw = await redisGet(userKey)
-    if (!raw) return NextResponse.json({ error: 'Email ou mot de passe incorrect.' }, { status: 401 })
-
-    const user = JSON.parse(raw)
+    const user = await getUser(emailLower)
+    if (!user) return NextResponse.json({ error: 'Email ou mot de passe incorrect.' }, { status: 401 })
     if (user.password !== hashPassword(password))
       return NextResponse.json({ error: 'Email ou mot de passe incorrect.' }, { status: 401 })
 
-    const token = generateToken()
-    await redisSetEx(`session:${token}`, 60 * 60 * 24 * 30, emailLower)
+    const token = randomBytes(32).toString('hex')
+    await createSession(token, emailLower)
     return NextResponse.json({ token, uses: user.uses, maxUses: MAX_USES })
   }
 

@@ -1612,19 +1612,34 @@ function injectVars(template: string, vars: Record<string, string>) {
 }
 
 const MAX_USES = 3
+const SUPABASE_URL = process.env.SUPABASE_URL!
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY!
 
-function redisUrl(path: string) { return `${process.env.KV_REST_API_URL}${path}` }
-function redisHeaders() {
-  return { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`, 'Content-Type': 'application/json' }
+function sbHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+  }
 }
-async function redisGet(key: string) {
-  const r = await fetch(redisUrl(`/get/${encodeURIComponent(key)}`), { headers: redisHeaders() })
+
+async function getSession(token: string) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/sessions?token=eq.${token}&select=email,expires_at`, { headers: sbHeaders() })
   const data = await r.json()
-  return data.result
+  return data[0] || null
 }
-async function redisSet(key: string, value: string) {
-  await fetch(redisUrl(`/set/${encodeURIComponent(key)}`), {
-    method: 'POST', headers: redisHeaders(), body: JSON.stringify({ value }),
+
+async function getUser(email: string) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=*`, { headers: sbHeaders() })
+  const data = await r.json()
+  return data[0] || null
+}
+
+async function incrementUses(email: string, newUses: number) {
+  await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`, {
+    method: 'PATCH',
+    headers: { ...sbHeaders(), 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ uses: newUses }),
   })
 }
 
@@ -1633,14 +1648,13 @@ export async function POST(req: NextRequest) {
 
   if (!token) return NextResponse.json({ error: 'Non authentifié.' }, { status: 401 })
 
-  const email = await redisGet(`session:${token}`)
-  if (!email) return NextResponse.json({ error: 'Session expirée. Reconnecte-toi.' }, { status: 401 })
+  const session = await getSession(token)
+  if (!session) return NextResponse.json({ error: 'Session expirée. Reconnecte-toi.' }, { status: 401 })
+  if (new Date(session.expires_at) < new Date()) return NextResponse.json({ error: 'Session expirée. Reconnecte-toi.' }, { status: 401 })
 
-  const userKey = `user:${email}`
-  const rawUser = await redisGet(userKey)
-  if (!rawUser) return NextResponse.json({ error: 'Compte introuvable.' }, { status: 401 })
+  const user = await getUser(session.email)
+  if (!user) return NextResponse.json({ error: 'Compte introuvable.' }, { status: 401 })
 
-  const user = JSON.parse(rawUser)
   if (user.uses >= MAX_USES) return NextResponse.json({ error: `Tu as utilisé tes ${MAX_USES} analyses.` }, { status: 403 })
   if (!transcript?.trim()) return NextResponse.json({ error: 'La transcription est vide.' }, { status: 400 })
   if (!template?.trim()) return NextResponse.json({ error: 'Template manquant.' }, { status: 400 })
@@ -1660,10 +1674,10 @@ export async function POST(req: NextRequest) {
   const vars = parseVariables(rawVars)
   const filledHtml = injectVars(template, vars)
 
-  user.uses += 1
-  await redisSet(userKey, JSON.stringify(user))
+  const newUses = user.uses + 1
+  await incrementUses(session.email, newUses)
 
   return new NextResponse(filledHtml, {
-    headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Uses-Remaining': String(MAX_USES - user.uses) },
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Uses-Remaining': String(MAX_USES - newUses) },
   })
 }
