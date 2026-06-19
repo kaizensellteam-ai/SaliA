@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///Users/collotnoah/SalIA/app/globals.css"],"sourcesContent":["*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }\n\n:root {\n  --bg: #080A0F;\n  --bg2: #0C0F16;\n  --surface: #111520;\n  --surface2: #161B2A;\n  --surface3: #1C2235;\n  --border: rgba(255,255,255,0.07);\n  --border2: rgba(255,255,255,0.12);\n  --accent: #C9A84C;\n  --accent2: #E8C96A;\n  --accent-dim: rgba(201,168,76,0.12);\n  --accent-glow: rgba(201,168,76,0.2);\n  --blue: #3B82F6;\n  --green: #22C55E;\n  --green-dim: rgba(34,197,94,0.1);\n  --red: #EF4444;\n  --red-dim: rgba(239,68,68,0.08);\n  --yellow: #F59E0B;\n  --text: #F0F4FA;\n  --text2: #A8B5C8;\n  --text3: #5E6E84;\n  --font-display: 'Plus Jakarta Sans', sans-serif;\n  --font-body: 'Inter', sans-serif;\n}\n\nhtml, body {\n  background: var(--bg);\n  color: var(--text);\n  font-family: var(--font-body);\n  min-height: 100vh;\n  -webkit-font-smoothing: antialiased;\n}\n\n::selection {\n  background: rgba(201,168,76,0.25);\n}\n\ninput, textarea, button {\n  font-family: var(--font-body);\n}\n"],"names":[],"mappings":"AAAA;;;;;;AAEA;;;;;;;;;;;;;;;;;;;;;;;;;AAyBA;;;;;;;;AAQA;;;;AAIA"}}]
+}

@@ -1,0 +1,3 @@
+module.exports=[23546,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(3526);a.n(d("[project]/SalIA/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},4775,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(3526);a.n(d("[project]/SalIA/node_modules/next/dist/client/components/builtin/global-error.js"))},47713,a=>{"use strict";a.i(23546);var b=a.i(4775);a.n(b)},56367,a=>{a.n(a.i(47713))}];
+
+//# sourceMappingURL=02yo_next_dist_client_components_builtin_global-error_0-zfvz5.js.map
