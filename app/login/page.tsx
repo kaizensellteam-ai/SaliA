@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -18,6 +18,10 @@ export default function Login() {
   const [error, setError] = useState('')
   const [focused, setFocused] = useState<string | null>(null)
 
+  useEffect(() => {
+    if (localStorage.getItem('salia_token')) router.replace('/dashboard')
+  }, [router])
+
   async function submit() {
     if (!email || !password) return setError('Remplis tous les champs.')
     if (tab === 'register' && password.length < 6) return setError('Minimum 6 caractères.')
@@ -32,7 +36,7 @@ export default function Login() {
       if (!r.ok) throw new Error(data.error || 'Erreur.')
       localStorage.setItem('salia_token', data.token)
       localStorage.setItem('salia_uses', String(data.uses))
-      router.push('/')
+      router.push('/dashboard')
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Erreur inconnue.')
     } finally { setLoading(false) }
